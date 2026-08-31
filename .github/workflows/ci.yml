@@ -46,7 +46,7 @@ jobs:
         # First train the model for API tests
         python src/train.py
         # Then run tests
-        pytest tests/ -v --tb=short
+        python -m pytest tests/ -v --tb=short
 
     - name: Upload model artifacts
       uses: actions/upload-artifact@v4
