@@ -5,7 +5,6 @@ FastAPI service for diabetes progression prediction.
 import pickle
 import json
 from pathlib import Path
-from typing import Dict
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 import numpy as np
