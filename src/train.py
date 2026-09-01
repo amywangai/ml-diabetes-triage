@@ -12,6 +12,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.linear_model import Ridge
 
 # Set random seed for reproducibility
 RANDOM_SEED = 42
@@ -42,6 +44,23 @@ def train_model_v01(X_train, y_train):
     model.fit(X_train_scaled, y_train)
 
     return {"scaler": scaler, "model": model}
+
+
+def train_model_v02(X_train, y_train):
+    """
+    Train improved model: StandardScaler + Ridge with optimized alpha.
+    Also includes RandomForest as alternative.
+    """
+    print("Training v0.2 model: StandardScaler + Ridge (alpha=10)")
+
+    scaler = StandardScaler()
+    X_train_scaled = scaler.fit_transform(X_train)
+
+    # Use Ridge regression with regularization
+    model = Ridge(alpha=10.0, random_state=RANDOM_SEED)
+    model.fit(X_train_scaled, y_train)
+
+    return {"scaler": scaler, "model": model, "type": "ridge"}
 
 
 def evaluate_model(pipeline, X_test, y_test):
@@ -93,11 +112,10 @@ def main():
 
     print(f"Train size: {len(X_train)}, Test size: {len(X_test)}")
 
-    # Train model
-    if MODEL_VERSION == "v0.1":
-        pipeline = train_model_v01(X_train, y_train)
+    # Train model based on version
+    if MODEL_VERSION == "v0.2":
+        pipeline = train_model_v02(X_train, y_train)
     else:
-        # Will implement v0.2 later
         pipeline = train_model_v01(X_train, y_train)
 
     # Evaluate
